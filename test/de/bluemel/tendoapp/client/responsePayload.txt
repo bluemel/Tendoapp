@@ -1,0 +1,127 @@
+com.google.gwt.user.client.rpc.InvocationException: Error while deserialization response
+	at com.gdevelop.gwt.syncrpc.RemoteServiceSyncProxy.doInvoke(RemoteServiceSyncProxy.java:214)
+	at com.gdevelop.gwt.syncrpc.RemoteServiceInvocationHandler.invoke(RemoteServiceInvocationHandler.java:193)
+	at $Proxy4.readAllSeminars(Unknown Source)
+	at de.bluemel.tendoapp.client.TendoappGwtRpcClientTest.test(TendoappGwtRpcClientTest.java:21)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+Caused by: com.google.gwt.user.client.rpc.SerializationException: java.lang.reflect.InvocationTargetException
+	at com.gdevelop.gwt.syncrpc.SyncClientSerializationStreamReader.deserialize(SyncClientSerializationStreamReader.java:770)
+	at com.google.gwt.user.client.rpc.impl.AbstractSerializationStreamReader.readObject(AbstractSerializationStreamReader.java:119)
+	at com.google.gwt.user.client.rpc.impl.RequestCallbackAdapter$ResponseReader$8.read(RequestCallbackAdapter.java:106)
+	at com.gdevelop.gwt.syncrpc.RemoteServiceSyncProxy.doInvoke(RemoteServiceSyncProxy.java:200)
+	... 26 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at com.gdevelop.gwt.syncrpc.SyncClientSerializationStreamReader.deserializeWithCustomFieldDeserializer(SyncClientSerializationStreamReader.java:625)
+	at com.gdevelop.gwt.syncrpc.SyncClientSerializationStreamReader.deserializeImpl(SyncClientSerializationStreamReader.java:607)
+	at com.gdevelop.gwt.syncrpc.SyncClientSerializationStreamReader.deserialize(SyncClientSerializationStreamReader.java:745)
+	... 29 more
+Caused by: com.google.gwt.user.client.rpc.SerializationException: java.lang.ClassNotFoundException: http:
+	at com.gdevelop.gwt.syncrpc.SyncClientSerializationStreamReader.deserialize(SyncClientSerializationStreamReader.java:758)
+	at com.google.gwt.user.client.rpc.impl.AbstractSerializationStreamReader.readObject(AbstractSerializationStreamReader.java:119)
+	at com.gdevelop.gwt.syncrpc.SyncClientSerializationStreamReader$ValueReader$8.readValue(SyncClientSerializationStreamReader.java:131)
+	at com.gdevelop.gwt.syncrpc.SyncClientSerializationStreamReader.deserializeValue(SyncClientSerializationStreamReader.java:368)
+	at com.gdevelop.gwt.syncrpc.SyncClientSerializationStreamReader.deserializeClass(SyncClientSerializationStreamReader.java:584)
+	at com.gdevelop.gwt.syncrpc.SyncClientSerializationStreamReader.deserializeImpl(SyncClientSerializationStreamReader.java:613)
+	at com.gdevelop.gwt.syncrpc.SyncClientSerializationStreamReader.deserialize(SyncClientSerializationStreamReader.java:745)
+	at com.google.gwt.user.client.rpc.impl.AbstractSerializationStreamReader.readObject(AbstractSerializationStreamReader.java:119)
+	at com.google.gwt.user.client.rpc.core.java.util.Collection_CustomFieldSerializerBase.deserialize(Collection_CustomFieldSerializerBase.java:34)
+	at com.google.gwt.user.client.rpc.core.java.util.ArrayList_CustomFieldSerializer.deserialize(ArrayList_CustomFieldSerializer.java:34)
+	... 36 more
+Caused by: java.lang.ClassNotFoundException: http:
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:423)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:356)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:186)
+	at com.gdevelop.gwt.syncrpc.SyncClientSerializationStreamReader.deserialize(SyncClientSerializationStreamReader.java:725)
+	... 45 more
+
+Send request to http://tendo-app.appspot.com/tendoapp/service
+Request payload: 7|0|4|http://tendo-app.appspot.com/tendoapp/|E54612A1E9D95EF4C54D0BCDEEED146C|de.bluemel.tendoapp.client.TendoAppService|readAllSeminars|1|2|3|4|0|
+Response code: 200
+Response payload: //OK[10,15,14,'VN8geGA',5,32,31,'UTC0tGA',5,30,3,2,10,20,19,'UPLoZGA',5,29,22,'UPBVNmA',5,26,3,2,10,20,19,'UOnlQ2A',5,28,22,'UOdSFWA',5,26,3,2,10,20,19,'UODiImA',5,27,22,'UN5O9GA',5,26,3,2,10,25,24,'UKrPXGA',5,23,22,'UKmFxWA',5,21,3,2,10,20,19,'UJjJGmA',5,18,17,'UJd_g2A',5,16,3,2,10,15,14,'UJjJGmA',5,13,12,'UJd_g2A',5,11,3,2,10,9,8,'UHxoZMA',5,7,6,'UHxoZMA',5,4,3,2,8,1,["java.util.ArrayList/4159755760","de.bluemel.tendoapp.shared.Seminar/3390578750","rO0ABXcEAAAAAXQAEGpkb0RldGFjaGVkU3RhdGVw","http://www.aikido-fab.de/wp-content/uploads/2013/06/Lehrgang-Tendoryu-Aikido-mit-Robert-Hundshammer.pdf","java.util.Date/3385151746","Robert Hundshammer","1ffadc8e-4a0b-478f-a0f2-ba6077bf6bd1","Regensburg","Post Süd e.V. Regensburg","Aikidolehrgang","http://aikido.tg-kitzingen.de/sites/files/kt-lehrgang_2013_-_volker_marczona.pdf","Volker Marczona","09df3280-717f-4dbc-a1f9-7fa24ae7554e","Kitzingen","TG Kitzingen","http://www.tendo-world-aikido.de/static/attachments/2013_AusschreibungLudo.pdf","Ludo Peters","d2c900e7-1546-4198-bce1-ba1238286d2c","München / Großhadern","TSV Großhadern","http://www.tendo-world-aikido.de/static/attachments/Jos_Vanroy_2013_Bad_Saeckingen.pdf","Jos Vanroy","a426f164-dfae-489e-a213-0832421a553c","Bad Säckingen","TV Bad Säckingen","Termin in der Schwebe","e0453620-8477-4599-ba6b-dde544315966","859043f7-a182-429f-9879-c656c8d5868f","0072a0f0-9b9e-4198-b68a-d8d5b974c406","folgt","Shimizu Sensei","19c05486-c169-4a66-bbde-9b719b97d596"],0,7]
+@@@ sig = java.util.ArrayList/4159755760
+@@@ java.util.ArrayList
+@@@ sig = de.bluemel.tendoapp.shared.Seminar/3390578750
+@@@ de.bluemel.tendoapp.shared.Seminar
+@@@ sig = http://www.aikido-fab.de/wp-content/uploads/2013/06/Lehrgang-Tendoryu-Aikido-mit-Robert-Hundshammer.pdf
+@@@ http:
+
+//OK[10,15,14,'VN8geGA',
+5,32,31,'UTC0tGA',
+5,30,3,2,10,20,19,'UPLoZGA',
+5,29,22,'UPBVNmA',
+5,26,3,2,10,20,19,'UOnlQ2A',
+5,28,22,'UOdSFWA',
+5,26,3,2,10,20,19,'UODiImA',
+5,27,22,'UN5O9GA',
+5,26,3,2,10,25,24,'UKrPXGA',
+5,23,22,'UKmFxWA',
+5,21,3,2,10,20,19,'UJjJGmA',
+5,18,17,'UJd_g2A',
+5,16,3,2,10,15,14,'UJjJGmA',
+5,13,12,'UJd_g2A',
+5,11,3,2,10,9,8,'UHxoZMA',
+5,7,6,'UHxoZMA',
+5,4,3,2,8,1,
+["java.util.ArrayList/4159755760",
+"de.bluemel.tendoapp.shared.Seminar/3390578750",
+"rO0ABXcEAAAAAXQAEGpkb0RldGFjaGVkU3RhdGVw",
+"http://www.aikido-fab.de/wp-content/uploads/2013/06/Lehrgang-Tendoryu-Aikido-mit-Robert-Hundshammer.pdf",
+"java.util.Date/3385151746",
+"Robert Hundshammer",
+"1ffadc8e-4a0b-478f-a0f2-ba6077bf6bd1",
+"Regensburg",
+"Post Süd e.V. Regensburg","Aikidolehrgang",
+"http://aikido.tg-kitzingen.de/sites/files/kt-lehrgang_2013_-_volker_marczona.pdf",
+"Volker Marczona",
+"09df3280-717f-4dbc-a1f9-7fa24ae7554e",
+"Kitzingen",
+"TG Kitzingen",
+"http://www.tendo-world-aikido.de/static/attachments/2013_AusschreibungLudo.pdf",
+"Ludo Peters",
+"d2c900e7-1546-4198-bce1-ba1238286d2c",
+"München / Großhadern",
+"TSV Großhadern",
+"http://www.tendo-world-aikido.de/static/attachments/Jos_Vanroy_2013_Bad_Saeckingen.pdf",
+"Jos Vanroy",
+"a426f164-dfae-489e-a213-0832421a553c",
+"Bad Säckingen","TV Bad Säckingen",
+"Termin in der Schwebe",
+"e0453620-8477-4599-ba6b-dde544315966",
+"859043f7-a182-429f-9879-c656c8d5868f",
+"0072a0f0-9b9e-4198-b68a-d8d5b974c406",
+"folgt",
+"Shimizu Sensei",
+"19c05486-c169-4a66-bbde-9b719b97d596"],
+0,7]
