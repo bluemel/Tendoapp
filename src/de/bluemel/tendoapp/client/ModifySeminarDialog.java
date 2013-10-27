@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.bluemel.tendoapp.shared.Seminar;
+import de.bluemel.tendoapp.shared.SeminarDTO;
 import de.bluemel.tendoapp.shared.Umlaut;
 
 public class ModifySeminarDialog extends EnterSeminarDialog {
@@ -20,10 +21,10 @@ public class ModifySeminarDialog extends EnterSeminarDialog {
 
 	private void enterModifySeminar() {
 		try {
-			final Seminar seminar = readSeminarFromUI(true);
+			final SeminarDTO seminar = readSeminarFromUI(true);
 			modifySeminar(seminar);
 		} catch (OverlappingSeminarsException e) {
-			final Seminar seminar = readSeminarFromUI(false);
+			final SeminarDTO seminar = readSeminarFromUI(false);
 			final YesNoHandler yesNoHandler = new YesNoHandler() {
 
 				@Override
@@ -42,7 +43,7 @@ public class ModifySeminarDialog extends EnterSeminarDialog {
 		}
 	}
 
-	private void modifySeminar(final Seminar seminar) {
+	private void modifySeminar(final SeminarDTO seminar) {
 		this.service.modifySeminar(seminar, new AsyncCallback<Void>() {
 
 			@Override

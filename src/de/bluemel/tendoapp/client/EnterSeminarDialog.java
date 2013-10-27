@@ -17,6 +17,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.bluemel.tendoapp.shared.Seminar;
+import de.bluemel.tendoapp.shared.SeminarDTO;
+import de.bluemel.tendoapp.shared.TimeLogic;
 import de.bluemel.tendoapp.shared.Umlaut;
 
 public class EnterSeminarDialog extends DialogBox {
@@ -158,10 +160,10 @@ public class EnterSeminarDialog extends DialogBox {
 
 	private void enterAddSeminar() {
 		try {
-			final Seminar seminar = readSeminarFromUI(true);
+			final SeminarDTO seminar = readSeminarFromUI(true);
 			addNewSeminar(seminar);
 		} catch (OverlappingSeminarsException e) {
-			final Seminar seminar = readSeminarFromUI(false);
+			final SeminarDTO seminar = readSeminarFromUI(false);
 			final YesNoHandler yesNoHandler = new YesNoHandler() {
 
 				@Override
@@ -180,7 +182,7 @@ public class EnterSeminarDialog extends DialogBox {
 		}
 	}
 
-	private void addNewSeminar(final Seminar seminar) {
+	private void addNewSeminar(final SeminarDTO seminar) {
 		this.service.addNewSeminar(seminar, new AsyncCallback<Void>() {
 
 			@Override
@@ -206,17 +208,17 @@ public class EnterSeminarDialog extends DialogBox {
 		}
 	}
 
-	protected Seminar readSeminarFromUI(final boolean validate) {
-		Seminar seminar = null;
+	protected SeminarDTO readSeminarFromUI(final boolean validate) {
+		SeminarDTO seminar = null;
 		if (validate) {
 			checkEmpty(tbFirstDay, tbLastDay, tbTitle, tbInstructor, tbOrganizer, tbLocation, tbAnnouncement);
 			checkDates();
 			checkForOverlaps();
 		}
 		if (givenSeminar == null) {
-			seminar = new Seminar();
+			seminar = new SeminarDTO();
 		} else {
-			seminar = new Seminar(givenSeminar);
+			seminar = new SeminarDTO(givenSeminar);
 		}
 		seminar.setFirstDay(TimeLogic.parse(tbFirstDay.getText()));
 		seminar.setLastDay(TimeLogic.parse(tbLastDay.getText()));
@@ -229,7 +231,7 @@ public class EnterSeminarDialog extends DialogBox {
 	}
 
 	protected void checkForOverlaps() {
-		final Seminar seminar = new Seminar();
+		final Seminar seminar = new SeminarDTO();
 		if (this.givenSeminar != null) {
 			seminar.setKey(this.givenSeminar.getKey());
 		}

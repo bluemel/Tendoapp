@@ -11,7 +11,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import de.bluemel.tendoapp.client.TendoAppService;
 import de.bluemel.tendoapp.shared.EMF;
 import de.bluemel.tendoapp.shared.FieldVerifier;
-import de.bluemel.tendoapp.shared.Seminar;
+import de.bluemel.tendoapp.shared.SeminarDTO;
 
 /**
  * The server side implementation of the RPC service.
@@ -54,10 +54,11 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 	}
 
 	@Override
-	public void addNewSeminar(final Seminar seminar) {
+	public void addNewSeminar(final SeminarDTO seminarDTO) {
 		EntityManager em = EMF.get().createEntityManager();
 		try {
 			em.getTransaction().begin();
+			SeminarPO seminar = new SeminarPO(seminarDTO);
 			seminar.setKey(UUID.randomUUID().toString());
 			em.persist(seminar);
 			em.getTransaction().commit();
@@ -68,21 +69,21 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 	}
 
 	@Override
-	public void modifySeminar(final Seminar newSeminarData) {
+	public void modifySeminar(final SeminarDTO newSeminarDTO) {
 		EntityManager em = EMF.get().createEntityManager();
 		try {
 			em.getTransaction().begin();
-			final Seminar seminar = em.find(Seminar.class, newSeminarData.getKey());
+			final SeminarPO seminar = em.find(SeminarPO.class, newSeminarDTO.getKey());
 			if (seminar == null) {
-				throw new RuntimeException("Seminar to modify \"" + newSeminarData.getKey().toString() + "\" not found");
+				throw new RuntimeException("Seminar to modify \"" + newSeminarDTO.getKey().toString() + "\" not found");
 			}
-			seminar.setFirstDay(newSeminarData.getFirstDay());
-			seminar.setLastDay(newSeminarData.getLastDay());
-			seminar.setTitle(newSeminarData.getTitle());
-			seminar.setInstructor(newSeminarData.getInstructor());
-			seminar.setOrganizer(newSeminarData.getOrganizer());
-			seminar.setLocation(newSeminarData.getLocation());
-			seminar.setAnnouncement(newSeminarData.getAnnouncement());
+			seminar.setFirstDay(newSeminarDTO.getFirstDay());
+			seminar.setLastDay(newSeminarDTO.getLastDay());
+			seminar.setTitle(newSeminarDTO.getTitle());
+			seminar.setInstructor(newSeminarDTO.getInstructor());
+			seminar.setOrganizer(newSeminarDTO.getOrganizer());
+			seminar.setLocation(newSeminarDTO.getLocation());
+			seminar.setAnnouncement(newSeminarDTO.getAnnouncement());
 			em.persist(seminar);
 			em.getTransaction().commit();
 		} catch (RuntimeException e) {
@@ -92,14 +93,13 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 	}
 
 	@Override
-	public void removeSeminar(Seminar seminarToRemove) {
+	public void removeSeminar(SeminarDTO seminarDTO) {
 		EntityManager em = EMF.get().createEntityManager();
 		try {
 			em.getTransaction().begin();
-			final Seminar seminar = em.find(Seminar.class, seminarToRemove.getKey());
+			final SeminarPO seminar = em.find(SeminarPO.class, seminarDTO.getKey());
 			if (seminar == null) {
-				throw new RuntimeException("Seminar to remove \"" + seminarToRemove.getKey().toString()
-						+ "\" not found");
+				throw new RuntimeException("Seminar to remove \"" + seminarDTO.getKey().toString() + "\" not found");
 			}
 			em.remove(seminar);
 			em.getTransaction().commit();
@@ -111,12 +111,12 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Seminar> readAllSeminars() {
+	public List<SeminarDTO> readAllSeminars() {
 		EntityManager em = EMF.get().createEntityManager();
-		final List<Seminar> resultSet = new ArrayList<Seminar>();
-		for (final Seminar s : (List<Seminar>) em.createQuery("SELECT s FROM Seminar s ORDER BY firstDay ASC")
+		final List<SeminarDTO> resultSet = new ArrayList<SeminarDTO>();
+		for (final SeminarPO s : (List<SeminarPO>) em.createQuery("SELECT s FROM SeminarPO s ORDER BY firstDay ASC")
 				.getResultList()) {
-			resultSet.add(new Seminar(s));
+			resultSet.add(new SeminarDTO(s));
 		}
 		return resultSet;
 	}

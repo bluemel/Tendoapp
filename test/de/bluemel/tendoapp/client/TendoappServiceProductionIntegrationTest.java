@@ -1,22 +1,31 @@
 package de.bluemel.tendoapp.client;
 
+import java.util.List;
+
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.gdevelop.gwt.syncrpc.SyncProxy;
-import com.google.gwt.user.client.rpc.InvocationException;
 
-public class TendoappGwtRpcClientTest {
+import de.bluemel.tendoapp.shared.SeminarDTO;
 
-	@Test(expected = InvocationException.class)
-	public void testReadAllSeminars() {
-		TendoAppService rpcService = (TendoAppService) SyncProxy.newProxyInstance(TendoAppService.class,
+public class TendoappServiceProductionIntegrationTest {
+
+	private static TendoAppService rpcService;
+
+	@BeforeClass
+	public static void initService() {
+		rpcService = (TendoAppService) SyncProxy.newProxyInstance(TendoAppService.class,
 				"http://tendo-app.appspot.com/tendoapp/", "service");
-		// readAllSeminars does not work out so far
-		rpcService.readAllSeminars();
-		//		for (Seminar seminar : rpcService.readAllSeminars()) {
-		//			System.out.println(seminar.toString());
-		//		}
+	}
+
+	@Test
+	public void testReadAllSeminars() {
+		List<SeminarDTO> resultList = rpcService.readAllSeminars();
+		for (SeminarDTO seminar : resultList) {
+			System.out.println(seminar);
+		}
 	}
 
 	@Test

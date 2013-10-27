@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.bluemel.tendoapp.shared.Seminar;
+import de.bluemel.tendoapp.shared.TimeLogic;
 
 public class OverlappingSeminarsException extends IllegalArgumentException {
 

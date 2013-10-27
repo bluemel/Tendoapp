@@ -1,130 +1,109 @@
 package de.bluemel.tendoapp.shared;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+/**
+ * Abstract class that keeps the persistent object (PO) and the data transfer object (DTO) together.
+ * Basically the GWT app would also work with the PO but with the separation we gain more flexibility
+ * - we could use the gwt-syncproxy library in order to access the app's server by any Java application (e. g. Android)
+ * - we could use special classes / annotations (e. g. @GeneratedValue(strategy = GenerationType.IDENTITY)) that do not compile on a GWT client
+ * 
+ * @author Bluemel1.Martin
+ */
+public abstract class Seminar {
 
-@Entity
-public class Seminar implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
-	// does not compile on the client
-	// @GeneratedValue(strategy = GenerationType.IDENTITY)
-	// private com.google.appengine.api.datastore.Key key;
-	@Id
-	private String key;
-
-	@Basic
-	private Date firstDay;
-
-	@Basic
-	private Date lastDay;
-
-	@Basic
-	private String title;
-
-	@Basic
-	private String instructor;
-
-	@Basic
-	private String organizer;
-
-	@Basic
-	private String location;
-
-	@Basic
-	private String announcement;
-
-	public Seminar() {
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getName()).append('[');
+		add(sb, "key", getKey(), true);
+		add(sb, "firstDay", TimeLogic.format(getFirstDay()), false);
+		add(sb, "lastDay", TimeLogic.format(getLastDay()), false);
+		add(sb, "title", getTitle(), false);
+		add(sb, "instructor", getInstructor(), false);
+		add(sb, "organizer", getOrganizer(), false);
+		add(sb, "location", getLocation(), false);
+		add(sb, "announcement", getAnnouncement(), false);
+		sb.append(']');
+		return sb.toString();
 	}
 
-	public Seminar(final Seminar orig) {
-		this.key = orig.getKey();
-		this.firstDay = orig.getFirstDay();
-		this.lastDay = orig.getLastDay();
-		this.title = orig.getTitle();
-		this.instructor = orig.getInstructor();
-		this.organizer = orig.getOrganizer();
-		this.location = orig.getLocation();
-		this.announcement = orig.getAnnouncement();
+	@Override
+	public boolean equals(final Object other) {
+		if (!(other instanceof Seminar)) {
+			return false;
+		}
+		return getKey().equals(((Seminar) other).getKey());
 	}
 
-	public Seminar(Date firstDay, Date lastDay, String title, String instructor, String organizer, String location,
-			String announcement) {
-		this.firstDay = new Date(firstDay.getTime());
-		this.lastDay = new Date(lastDay.getTime());
-		this.title = title;
-		this.instructor = instructor;
-		this.organizer = organizer;
-		this.location = location;
-		this.announcement = announcement;
+	@Override
+	public int hashCode() {
+		return getKey().hashCode();
 	}
 
-	public String getKey() {
-		return key;
+	private void add(final StringBuilder sb, final String name, final String value, final boolean first) {
+		if (!first) {
+			sb.append(", ");
+		}
+		if (value == null || value.trim().length() == 0) {
+			sb.append(name).append(" = <no ").append(name).append('>');
+		} else {
+			sb.append(name).append(" = \"").append(value).append('\"');
+		}
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	protected void init(Seminar seminar) {
+		setKey(seminar.getKey());
+		setFirstDay(new Date(seminar.getFirstDay().getTime()));
+		setLastDay(new Date(seminar.getLastDay().getTime()));
+		setTitle(seminar.getTitle());
+		setInstructor(seminar.getInstructor());
+		setOrganizer(seminar.getOrganizer());
+		setLocation(seminar.getLocation());
+		setAnnouncement(seminar.getAnnouncement());
 	}
 
-	public Date getFirstDay() {
-		return new Date(firstDay.getTime());
+	protected void init(String key, Date firstDay, Date lastDay, String title, String instructor, String organizer,
+			String location, String announcement) {
+		setKey(key);
+		setFirstDay(new Date(firstDay.getTime()));
+		setLastDay(new Date(lastDay.getTime()));
+		setTitle(title);
+		setInstructor(instructor);
+		setOrganizer(organizer);
+		setLocation(location);
+		setAnnouncement(announcement);
 	}
 
-	public void setFirstDay(Date firstDay) {
-		this.firstDay = new Date(firstDay.getTime());
-	}
+	public abstract String getKey();
 
-	public Date getLastDay() {
-		return new Date(lastDay.getTime());
-	}
+	public abstract void setKey(String key);
 
-	public void setLastDay(Date lastDay) {
-		this.lastDay = new Date(lastDay.getTime());
-	}
+	public abstract Date getFirstDay();
 
-	public String getTitle() {
-		return title;
-	}
+	public abstract void setFirstDay(Date firstDay);
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+	public abstract Date getLastDay();
 
-	public String getInstructor() {
-		return instructor;
-	}
+	public abstract void setLastDay(Date lastDay);
 
-	public void setInstructor(String instructor) {
-		this.instructor = instructor;
-	}
+	public abstract String getTitle();
 
-	public String getOrganizer() {
-		return organizer;
-	}
+	public abstract void setTitle(String title);
 
-	public void setOrganizer(String organizer) {
-		this.organizer = organizer;
-	}
+	public abstract String getInstructor();
 
-	public String getLocation() {
-		return location;
-	}
+	public abstract void setInstructor(String instructor);
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+	public abstract String getOrganizer();
 
-	public String getAnnouncement() {
-		return announcement;
-	}
+	public abstract void setOrganizer(String organizer);
 
-	public void setAnnouncement(String announcement) {
-		this.announcement = announcement;
-	}
+	public abstract String getLocation();
+
+	public abstract void setLocation(String location);
+
+	public abstract String getAnnouncement();
+
+	public abstract void setAnnouncement(String announcement);
 }

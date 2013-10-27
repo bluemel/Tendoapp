@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.bluemel.tendoapp.shared.Seminar;
+import de.bluemel.tendoapp.shared.SeminarDTO;
 import de.bluemel.tendoapp.shared.Umlaut;
 
 public class RemoveSeminarDialog extends EnterSeminarDialog {
@@ -20,7 +21,7 @@ public class RemoveSeminarDialog extends EnterSeminarDialog {
 	}
 
 	private void enterRemoveSeminar() {
-		final Seminar seminar = readSeminarFromUI(false);
+		final SeminarDTO seminar = readSeminarFromUI(false);
 		if (seminar.getLocation().equals("sektion") && seminar.getAnnouncement().equals("tendo")) {
 			removeSeminar(seminar);
 		} else {
@@ -31,7 +32,7 @@ public class RemoveSeminarDialog extends EnterSeminarDialog {
 		}
 	}
 
-	private void removeSeminar(final Seminar seminar) {
+	private void removeSeminar(final SeminarDTO seminar) {
 		this.service.removeSeminar(seminar, new AsyncCallback<Void>() {
 
 			@Override

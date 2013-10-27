@@ -1,4 +1,4 @@
-package de.bluemel.tendoapp.client;
+package de.bluemel.tendoapp.shared;
 
 import java.util.Date;
 

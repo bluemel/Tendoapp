@@ -24,6 +24,8 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.bluemel.tendoapp.shared.Seminar;
+import de.bluemel.tendoapp.shared.SeminarDTO;
+import de.bluemel.tendoapp.shared.TimeLogic;
 import de.bluemel.tendoapp.shared.Umlaut;
 
 /**
@@ -150,6 +152,8 @@ public class TendoApp implements EntryPoint {
 			public SafeHtml getValue(Seminar seminar) {
 				final SafeHtmlBuilder sb = new SafeHtmlBuilder();
 				if (retrieveOverlappingSeminars(seminar).size() > 0) {
+					//					System.out.println("@@@ Seminar " + seminar.toString() + " overlaps with "
+					//							+ retrieveOverlappingSeminars(seminar).get(0));
 					sb.appendHtmlConstant("<div style=\"background-color:#FFCCCC\">"
 							+ TimeLogic.format(seminar.getLastDay()) + "</div>");
 				} else {
@@ -217,7 +221,7 @@ public class TendoApp implements EntryPoint {
 		seminarTableModel.getList().clear();
 		seminarTableModel.refresh();
 		seminarTableView.redraw();
-		this.service.readAllSeminars(new AsyncCallback<List<Seminar>>() {
+		this.service.readAllSeminars(new AsyncCallback<List<SeminarDTO>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -226,8 +230,8 @@ public class TendoApp implements EntryPoint {
 			}
 
 			@Override
-			public void onSuccess(List<Seminar> result) {
-				for (final Seminar seminar : result) {
+			public void onSuccess(List<SeminarDTO> result) {
+				for (final SeminarDTO seminar : result) {
 					seminarTableModel.getList().add(seminar);
 				}
 				seminarTableModel.refresh();
