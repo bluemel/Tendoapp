@@ -6,3 +6,4 @@ gaeHrdEnabled=true
 googleCloudSqlEnabled=false
 localDevMySqlEnabled=true
 ormEnhancementInclusions=src/de/bluemel/tendoapp/shared/Seminar.java|src/
+validationExclusions=test/de/bluemel/tendoapp/client/TendoappGwtRpcClientTest.java|test/com/gdevelop/gwt/syncrpc/RemoteServiceSyncProxy.java
