@@ -55,11 +55,13 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 
 	@Override
 	public void addNewSeminar(final SeminarDTO seminarDTO) {
-		EntityManager em = EMF.get().createEntityManager();
+		final EntityManager em = EMF.get().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			SeminarPO seminar = new SeminarPO(seminarDTO);
-			seminar.setKey(UUID.randomUUID().toString());
+			if (seminarDTO.getKey() == null || seminarDTO.getKey().trim().length() == 0) {
+				seminar.setKey(UUID.randomUUID().toString());
+			}
 			em.persist(seminar);
 			em.getTransaction().commit();
 		} catch (RuntimeException e) {
@@ -70,7 +72,7 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 
 	@Override
 	public void modifySeminar(final SeminarDTO newSeminarDTO) {
-		EntityManager em = EMF.get().createEntityManager();
+		final EntityManager em = EMF.get().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			final SeminarPO seminar = em.find(SeminarPO.class, newSeminarDTO.getKey());
@@ -94,7 +96,7 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 
 	@Override
 	public void removeSeminar(SeminarDTO seminarDTO) {
-		EntityManager em = EMF.get().createEntityManager();
+		final EntityManager em = EMF.get().createEntityManager();
 		try {
 			em.getTransaction().begin();
 			final SeminarPO seminar = em.find(SeminarPO.class, seminarDTO.getKey());
@@ -111,13 +113,24 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<SeminarDTO> readAllSeminars() {
-		EntityManager em = EMF.get().createEntityManager();
+	public List<SeminarDTO> findAllSeminars() {
+		final EntityManager em = EMF.get().createEntityManager();
 		final List<SeminarDTO> resultSet = new ArrayList<SeminarDTO>();
 		for (final SeminarPO s : (List<SeminarPO>) em.createQuery("SELECT s FROM SeminarPO s ORDER BY firstDay ASC")
 				.getResultList()) {
 			resultSet.add(new SeminarDTO(s));
 		}
 		return resultSet;
+	}
+
+	@Override
+	public SeminarDTO findSeminarById(final String id) {
+		SeminarDTO foundSeminar = null;
+		final EntityManager em = EMF.get().createEntityManager();
+		final SeminarPO seminar = em.find(SeminarPO.class, id);
+		if (seminar != null) {
+			foundSeminar = new SeminarDTO(seminar);
+		}
+		return foundSeminar;
 	}
 }

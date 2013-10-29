@@ -13,7 +13,9 @@ public interface TendoAppServiceAsync {
 
 	void greetServer(String input, AsyncCallback<String> callback) throws IllegalArgumentException;
 
-	void readAllSeminars(AsyncCallback<List<SeminarDTO>> callback);
+	void findAllSeminars(AsyncCallback<List<SeminarDTO>> callback);
+
+	void findSeminarById(String id, AsyncCallback<SeminarDTO> callback);
 
 	void addNewSeminar(SeminarDTO seminar, AsyncCallback<Void> callback);
 

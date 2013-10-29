@@ -15,7 +15,9 @@ public interface TendoAppService extends RemoteService {
 
 	String greetServer(String name) throws IllegalArgumentException;
 
-	List<SeminarDTO> readAllSeminars();
+	List<SeminarDTO> findAllSeminars();
+
+	SeminarDTO findSeminarById(String id);
 
 	void addNewSeminar(SeminarDTO seminar);
 

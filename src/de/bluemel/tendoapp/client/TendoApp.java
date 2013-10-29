@@ -221,7 +221,7 @@ public class TendoApp implements EntryPoint {
 		seminarTableModel.getList().clear();
 		seminarTableModel.refresh();
 		seminarTableView.redraw();
-		this.service.readAllSeminars(new AsyncCallback<List<SeminarDTO>>() {
+		this.service.findAllSeminars(new AsyncCallback<List<SeminarDTO>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
