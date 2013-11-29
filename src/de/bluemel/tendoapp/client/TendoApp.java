@@ -152,8 +152,9 @@ public class TendoApp implements EntryPoint {
 			public SafeHtml getValue(Seminar seminar) {
 				final SafeHtmlBuilder sb = new SafeHtmlBuilder();
 				if (retrieveOverlappingSeminars(seminar).size() > 0) {
-					//					System.out.println("@@@ Seminar " + seminar.toString() + " overlaps with "
-					//							+ retrieveOverlappingSeminars(seminar).get(0));
+					// System.out.println("@@@ Seminar " + seminar.toString() +
+					// " overlaps with "
+					// + retrieveOverlappingSeminars(seminar).get(0));
 					sb.appendHtmlConstant("<div style=\"background-color:#FFCCCC\">"
 							+ TimeLogic.format(seminar.getLastDay()) + "</div>");
 				} else {
@@ -191,14 +192,30 @@ public class TendoApp implements EntryPoint {
 			public SafeHtml getValue(Seminar seminar) {
 				final SafeHtmlBuilder sb = new SafeHtmlBuilder();
 				if (seminar.getAnnouncement() != null && seminar.getAnnouncement().length() > 0) {
-					if (seminar.getAnnouncement().startsWith("http") && seminar.getAnnouncement().endsWith(".pdf")) {
-						sb.appendHtmlConstant("<a href=\"" + seminar.getAnnouncement()
-								+ "\"><img width=\"30\" src=\"pdf.png\" border=\"0\" alt=\"Ausschreibung (PDF)\"></a>");
+					if (seminar.getAnnouncement().startsWith("http://") || seminar.getAnnouncement().startsWith("http://")) {
+						final String iconFileName = getIconFileName(seminar.getAnnouncement());
+						if (iconFileName != null) {
+							sb.appendHtmlConstant("<a href=\"" + seminar.getAnnouncement()
+									+ "\"><img width=\"30\" src=\"" + iconFileName + "\" border=\"0\" alt=\"Ausschreibung (PDF)\"></a>");
+						} else {
+							sb.appendHtmlConstant("<a href=\"" + seminar.getAnnouncement()
+									+ "\">" + seminar.getAnnouncement() + "</a>");							
+						}
 					} else {
 						sb.appendHtmlConstant(seminar.getAnnouncement());
 					}
 				}
 				return sb.toSafeHtml();
+			}
+
+			private String getIconFileName(final String announcement) {
+				String iconFileName = null;
+				if (announcement.endsWith(".pdf")) {
+					iconFileName = "pdf.png";
+				} else if (announcement.endsWith(".jpg")) {
+					iconFileName = "jpg.png";
+				}
+				return iconFileName;
 			}
 		};
 
