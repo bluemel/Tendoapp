@@ -1,4 +1,4 @@
-package de.bluemel.tendoapp.shared;
+package de.bluemel.tendoapp.server;
 
 /**
  * <p>

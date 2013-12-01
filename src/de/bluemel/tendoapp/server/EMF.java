@@ -1,4 +1,4 @@
-package de.bluemel.tendoapp.shared;
+package de.bluemel.tendoapp.server;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManagerFactory;

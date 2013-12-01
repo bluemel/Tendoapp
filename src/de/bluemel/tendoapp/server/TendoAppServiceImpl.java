@@ -9,8 +9,6 @@ import javax.persistence.EntityManager;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import de.bluemel.tendoapp.client.TendoAppService;
-import de.bluemel.tendoapp.shared.EMF;
-import de.bluemel.tendoapp.shared.FieldVerifier;
 import de.bluemel.tendoapp.shared.SeminarDTO;
 
 /**
