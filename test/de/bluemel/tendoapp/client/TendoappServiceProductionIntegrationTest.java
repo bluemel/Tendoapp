@@ -71,9 +71,8 @@ public class TendoappServiceProductionIntegrationTest {
 	public void testGreatServer() {
 		TendoAppService rpcService = (TendoAppService) SyncProxy.newProxyInstance(TendoAppService.class,
 				"http://tendo-app.appspot.com/tendoapp/", "service");
-		String hello = rpcService.greetServer("Martin");
-		Assert.assertEquals(
-				"Hello, Martin!<br><br>I am running Google App Engine/Google App Engine/1.8.7.<br><br>It looks like you are using:<br>Java/1.7.0_40",
-				hello);
+		String hello = rpcService.getServiceInfo();
+		Assert.assertEquals("I am running Google App Engine/Google App Engine/1.8.7.<br><br>"
+				+ "It looks like you are using:<br>Java/1.7.0_40", hello);
 	}
 }

@@ -13,7 +13,7 @@ import de.bluemel.tendoapp.shared.SeminarDTO;
 @RemoteServiceRelativePath("service")
 public interface TendoAppService extends RemoteService {
 
-	String greetServer(String name) throws IllegalArgumentException;
+	String getServiceInfo();
 
 	List<SeminarDTO> findAllSeminars();
 

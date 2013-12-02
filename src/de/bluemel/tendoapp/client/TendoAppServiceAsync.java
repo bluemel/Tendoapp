@@ -11,8 +11,6 @@ import de.bluemel.tendoapp.shared.SeminarDTO;
  */
 public interface TendoAppServiceAsync {
 
-	void greetServer(String input, AsyncCallback<String> callback) throws IllegalArgumentException;
-
 	void findAllSeminars(AsyncCallback<List<SeminarDTO>> callback);
 
 	void findSeminarById(String id, AsyncCallback<SeminarDTO> callback);
@@ -22,4 +20,6 @@ public interface TendoAppServiceAsync {
 	void modifySeminar(SeminarDTO seminar, AsyncCallback<Void> callback);
 
 	void removeSeminar(SeminarDTO seminar, AsyncCallback<Void> callback);
+
+	void getServiceInfo(AsyncCallback<String> callback);
 }

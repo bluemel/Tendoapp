@@ -261,7 +261,7 @@ public class EnterSeminarDialog extends DialogBox {
 			throw new IllegalArgumentException("Ung" + Umlaut.uuml + "ltige Zeichenkette \"" + tb.getText() + "\" im "
 					+ tb.getTitle() + "-Datum-Feld");
 		}
-		if (currentDate.getTime() < (new Date()).getTime() - DAY_IN_MILLIS) {
+		if (currentDate.getTime() < (new Date()).getTime() - (3 * DAY_IN_MILLIS)) {
 			throw new IllegalArgumentException("Datum im " + tb.getTitle() + "-Datum-Feld liegt in der Vergangenheit");
 		}
 	}

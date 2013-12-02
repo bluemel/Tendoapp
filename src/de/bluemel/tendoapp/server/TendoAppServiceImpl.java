@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -17,43 +19,11 @@ import de.bluemel.tendoapp.shared.SeminarDTO;
 @SuppressWarnings("serial")
 public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAppService {
 
-	public String greetServer(String input) throws IllegalArgumentException {
-		// Verify that the input is valid.
-		if (!FieldVerifier.isValidName(input)) {
-			// If the input is not valid, throw an IllegalArgumentException back to
-			// the client.
-			throw new IllegalArgumentException("Name must be at least 4 characters long");
-		}
-
-		String serverInfo = getServletContext().getServerInfo();
-		String userAgent = getThreadLocalRequest().getHeader("User-Agent");
-
-		// Escape data from the client to avoid cross-site script vulnerabilities.
-		input = escapeHtml(input);
-		userAgent = escapeHtml(userAgent);
-
-		return "Hello, " + input + "!<br><br>I am running " + serverInfo + ".<br><br>It looks like you are using:<br>"
-				+ userAgent;
-	}
-
-	/**
-	 * Escape an html string. Escaping data received from the client helps to
-	 * prevent cross-site script vulnerabilities.
-	 * 
-	 * @param html
-	 *            the html string to escape
-	 * @return the escaped string
-	 */
-	private String escapeHtml(String html) {
-		if (html == null) {
-			return null;
-		}
-		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-	}
+	private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("transactions-optional");
 
 	@Override
 	public void addNewSeminar(final SeminarDTO seminarDTO) {
-		final EntityManager em = EMF.get().createEntityManager();
+		final EntityManager em = /* EMF.get() */emf.createEntityManager();
 		try {
 			em.getTransaction().begin();
 			SeminarPO seminar = new SeminarPO(seminarDTO);
@@ -70,7 +40,7 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 
 	@Override
 	public void modifySeminar(final SeminarDTO newSeminarDTO) {
-		final EntityManager em = EMF.get().createEntityManager();
+		final EntityManager em = /* EMF.get() */emf.createEntityManager();
 		try {
 			em.getTransaction().begin();
 			final SeminarPO seminar = em.find(SeminarPO.class, newSeminarDTO.getKey());
@@ -94,7 +64,7 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 
 	@Override
 	public void removeSeminar(SeminarDTO seminarDTO) {
-		final EntityManager em = EMF.get().createEntityManager();
+		final EntityManager em = /* EMF.get() */emf.createEntityManager();
 		try {
 			em.getTransaction().begin();
 			final SeminarPO seminar = em.find(SeminarPO.class, seminarDTO.getKey());
@@ -112,7 +82,7 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<SeminarDTO> findAllSeminars() {
-		final EntityManager em = EMF.get().createEntityManager();
+		final EntityManager em = /* EMF.get() */emf.createEntityManager();
 		final List<SeminarDTO> resultSet = new ArrayList<SeminarDTO>();
 		for (final SeminarPO s : (List<SeminarPO>) em.createQuery("SELECT s FROM SeminarPO s ORDER BY firstDay ASC")
 				.getResultList()) {
@@ -124,11 +94,35 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 	@Override
 	public SeminarDTO findSeminarById(final String id) {
 		SeminarDTO foundSeminar = null;
-		final EntityManager em = EMF.get().createEntityManager();
+		final EntityManager em = /* EMF.get() */emf.createEntityManager();
 		final SeminarPO seminar = em.find(SeminarPO.class, id);
 		if (seminar != null) {
 			foundSeminar = new SeminarDTO(seminar);
 		}
 		return foundSeminar;
+	}
+
+
+	@Override
+	public String getServiceInfo() {
+		final String serverInfo = getServletContext().getServerInfo();
+		final String userAgent = getThreadLocalRequest().getHeader("User-Agent");
+		// Escape data from the client to avoid cross-site script vulnerabilities.
+		return "I am running " + serverInfo + ".<br><br>It looks like you are using:<br>" + escapeHtml(userAgent);
+	}
+
+	/**
+	 * Escape an html string. Escaping data received from the client helps to
+	 * prevent cross-site script vulnerabilities.
+	 * 
+	 * @param html
+	 *            the html string to escape
+	 * @return the escaped string
+	 */
+	private String escapeHtml(final String html) {
+		if (html == null) {
+			return null;
+		}
+		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	}
 }
