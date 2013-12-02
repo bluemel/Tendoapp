@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 import de.bluemel.tendoapp.shared.Seminar;
 import de.bluemel.tendoapp.shared.SeminarDTO;
+import de.bluemel.tendoapp.shared.TendoAppServiceAsync;
 import de.bluemel.tendoapp.shared.TimeLogic;
 import de.bluemel.tendoapp.shared.Umlaut;
 

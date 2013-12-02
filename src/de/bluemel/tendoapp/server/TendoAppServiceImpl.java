@@ -10,8 +10,8 @@ import javax.persistence.Persistence;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import de.bluemel.tendoapp.client.TendoAppService;
 import de.bluemel.tendoapp.shared.SeminarDTO;
+import de.bluemel.tendoapp.shared.TendoAppService;
 
 /**
  * The server side implementation of the RPC service.

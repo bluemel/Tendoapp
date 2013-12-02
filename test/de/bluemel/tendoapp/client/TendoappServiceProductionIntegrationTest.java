@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.gdevelop.gwt.syncrpc.SyncProxy;
 
 import de.bluemel.tendoapp.shared.SeminarDTO;
+import de.bluemel.tendoapp.shared.TendoAppService;
 import de.bluemel.tendoapp.shared.TimeLogic;
 
 /**

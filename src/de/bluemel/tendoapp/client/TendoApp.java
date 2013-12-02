@@ -25,6 +25,8 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import de.bluemel.tendoapp.shared.Seminar;
 import de.bluemel.tendoapp.shared.SeminarDTO;
+import de.bluemel.tendoapp.shared.TendoAppService;
+import de.bluemel.tendoapp.shared.TendoAppServiceAsync;
 import de.bluemel.tendoapp.shared.TimeLogic;
 import de.bluemel.tendoapp.shared.Umlaut;
 

@@ -1,10 +1,8 @@
-package de.bluemel.tendoapp.client;
+package de.bluemel.tendoapp.shared;
 
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
-import de.bluemel.tendoapp.shared.SeminarDTO;
 
 /**
  * The async counterpart of <code>TendoAppService</code>.
