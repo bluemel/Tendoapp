@@ -53,6 +53,8 @@ public class TendoApp implements EntryPoint {
 
 	private Button removeButton = null;
 
+	private Button removeOutdatedButton = null;
+
 	/**
 	 * This is the entry point method.
 	 */
@@ -76,17 +78,20 @@ public class TendoApp implements EntryPoint {
 		this.enterButton = initEnterButton();
 		this.modifyButton = initModifyButton();
 		this.removeButton = initRemoveButton();
+		this.removeOutdatedButton = initRemoveOutdatedButton();
 		RootPanel.get("seminarDateTable").add(this.seminarTableView);
 		RootPanel.get("messageArea").add(this.messageArea);
 		RootPanel.get("enterButton").add(this.enterButton);
 		RootPanel.get("modifyButton").add(this.modifyButton);
 		RootPanel.get("removeButton").add(this.removeButton);
+		RootPanel.get("removeOutdatedButton").add(this.removeOutdatedButton);
 		Window.addResizeHandler(new ResizeHandler() {
 			@Override
 			public void onResize(ResizeEvent event) {
 				messageArea.setWidth(Integer.toString(Window.getClientWidth() - 30) + " px");
 			}
 		});
+		// removeOutdatedSeminars();
 		readAllSeminars();
 	}
 
@@ -129,6 +134,18 @@ public class TendoApp implements EntryPoint {
 				} else {
 					new MessageBox("Fehler", "Kein Lehrgang ausgew" + Umlaut.auml + "hlt").show();
 				}
+			}
+		});
+		return button;
+	}
+
+	private Button initRemoveOutdatedButton() {
+		Button button = new Button("Alte Lehrg" + Umlaut.auml + "nge entfernen");
+		button.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				removeOutdatedSeminars();
 			}
 		});
 		return button;
@@ -201,7 +218,7 @@ public class TendoApp implements EntryPoint {
 									+ "\"><img width=\"30\" src=\"" + iconFileName + "\" border=\"0\" alt=\"Ausschreibung (PDF)\"></a>");
 						} else {
 							sb.appendHtmlConstant("<a href=\"" + seminar.getAnnouncement()
-									+ "\">" + seminar.getAnnouncement() + "</a>");							
+									+ "\">" + seminar.getAnnouncement() + "</a>");
 						}
 					} else {
 						sb.appendHtmlConstant(seminar.getAnnouncement());
@@ -255,6 +272,35 @@ public class TendoApp implements EntryPoint {
 				}
 				seminarTableModel.refresh();
 				messageArea.setText("");
+			}
+		});
+	}
+
+	public void removeOutdatedSeminars() {
+		this.messageArea.setText("Alte Lehrg" + Umlaut.auml + "nge werden entfernt...");
+		this.service.removeOutdatedSeminars(new AsyncCallback<Integer>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				messageArea.setText("Fehler beim Entfernen alter Lehrg" + Umlaut.auml + "nge!");
+				new MessageBox("Fehler beim Entfernen alter Lehrg" + Umlaut.auml + "nge!", caught.getMessage()).show();
+			}
+
+			@Override
+			public void onSuccess(Integer result) {
+				switch (result.intValue()) {
+				case 0:
+					messageArea.setText("Derzeit kein alter Lehrgang vorhanden.");
+					break;
+				case 1:
+					readAllSeminars();
+					messageArea.setText("1 Lehrgang wurde entfernt.");
+					break;
+				default:
+					readAllSeminars();
+					messageArea.setText(result.toString() + " Lehrg" + Umlaut.auml + "nge wurden entfernt.");
+					break;
+				}
 			}
 		});
 	}

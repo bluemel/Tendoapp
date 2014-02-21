@@ -22,4 +22,6 @@ public interface TendoAppService extends RemoteService {
 	void modifySeminar(SeminarDTO seminar);
 
 	void removeSeminar(SeminarDTO seminar);
+
+	Integer removeOutdatedSeminars();
 }

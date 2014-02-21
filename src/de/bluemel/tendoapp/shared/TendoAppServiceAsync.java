@@ -20,4 +20,6 @@ public interface TendoAppServiceAsync {
 	void removeSeminar(SeminarDTO seminar, AsyncCallback<Void> callback);
 
 	void getServiceInfo(AsyncCallback<String> callback);
+
+	void removeOutdatedSeminars(AsyncCallback<Integer> callback);
 }

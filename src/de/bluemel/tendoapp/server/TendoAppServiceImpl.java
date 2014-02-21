@@ -23,7 +23,7 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 
 	@Override
 	public void addNewSeminar(final SeminarDTO seminarDTO) {
-		final EntityManager em = /* EMF.get() */emf.createEntityManager();
+		final EntityManager em = emf.createEntityManager();
 		try {
 			em.getTransaction().begin();
 			SeminarPO seminar = new SeminarPO(seminarDTO);
@@ -35,12 +35,14 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 		} catch (RuntimeException e) {
 			em.getTransaction().rollback();
 			throw e;
+		} finally {
+			em.close();
 		}
 	}
 
 	@Override
 	public void modifySeminar(final SeminarDTO newSeminarDTO) {
-		final EntityManager em = /* EMF.get() */emf.createEntityManager();
+		final EntityManager em = emf.createEntityManager();
 		try {
 			em.getTransaction().begin();
 			final SeminarPO seminar = em.find(SeminarPO.class, newSeminarDTO.getKey());
@@ -59,12 +61,14 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 		} catch (RuntimeException e) {
 			em.getTransaction().rollback();
 			throw e;
+		} finally {
+			em.close();
 		}
 	}
 
 	@Override
 	public void removeSeminar(SeminarDTO seminarDTO) {
-		final EntityManager em = /* EMF.get() */emf.createEntityManager();
+		final EntityManager em = emf.createEntityManager();
 		try {
 			em.getTransaction().begin();
 			final SeminarPO seminar = em.find(SeminarPO.class, seminarDTO.getKey());
@@ -76,32 +80,77 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 		} catch (RuntimeException e) {
 			em.getTransaction().rollback();
 			throw e;
+		} finally {
+			em.close();
+		}
+	}
+
+	private static final long MAX_AGE_MILLIS = 3 * 24 * 60 * 60 * 1000;
+
+	@Override
+	public Integer removeOutdatedSeminars() {
+		final EntityManager em = emf.createEntityManager();
+		final long currentTimeMills = System.currentTimeMillis();
+		int count = 0;
+		try {
+//			em.getTransaction().begin();
+			for (SeminarPO seminar : findAllSeminars(em, DateOrdering.ascending)) {
+				if (currentTimeMills - seminar.getLastDay().getTime() > MAX_AGE_MILLIS) {
+					em.getTransaction().begin();
+					em.remove(seminar);
+					em.getTransaction().commit();
+					count++;
+				} else {
+					// since we have ascending order we can stop
+					break;
+				}
+			}
+//			em.getTransaction().commit();
+			return new Integer(count);
+		} finally {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			em.close();
 		}
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public List<SeminarDTO> findAllSeminars() {
-		final EntityManager em = /* EMF.get() */emf.createEntityManager();
+		final EntityManager em = emf.createEntityManager();
 		final List<SeminarDTO> resultSet = new ArrayList<SeminarDTO>();
-		for (final SeminarPO s : (List<SeminarPO>) em.createQuery("SELECT s FROM SeminarPO s ORDER BY firstDay ASC")
-				.getResultList()) {
-			resultSet.add(new SeminarDTO(s));
+		for (SeminarPO seminar : findAllSeminars(em, DateOrdering.ascending)) {
+			resultSet.add(new SeminarDTO(seminar));
 		}
 		return resultSet;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<SeminarPO> findAllSeminars(final EntityManager em, DateOrdering dateOrdering) {
+		String query = "SELECT s FROM SeminarPO s";
+		switch (dateOrdering) {
+		case ascending:
+			query += " ORDER BY firstDay ASC";
+			break;
+		case descending:
+			query += " ORDER BY lastDay DESC";
+			break;
+		default:
+			break;
+		}
+		return (List<SeminarPO>) em.createQuery(query).getResultList();
 	}
 
 	@Override
 	public SeminarDTO findSeminarById(final String id) {
 		SeminarDTO foundSeminar = null;
-		final EntityManager em = /* EMF.get() */emf.createEntityManager();
+		final EntityManager em = emf.createEntityManager();
 		final SeminarPO seminar = em.find(SeminarPO.class, id);
 		if (seminar != null) {
 			foundSeminar = new SeminarDTO(seminar);
 		}
 		return foundSeminar;
 	}
-
 
 	@Override
 	public String getServiceInfo() {
@@ -112,8 +161,7 @@ public class TendoAppServiceImpl extends RemoteServiceServlet implements TendoAp
 	}
 
 	/**
-	 * Escape an html string. Escaping data received from the client helps to
-	 * prevent cross-site script vulnerabilities.
+	 * Escape an html string. Escaping data received from the client helps to prevent cross-site script vulnerabilities.
 	 * 
 	 * @param html
 	 *            the html string to escape
