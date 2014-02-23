@@ -5,5 +5,5 @@ gaeDeployDialogSettings=
 gaeHrdEnabled=true
 googleCloudSqlEnabled=false
 localDevMySqlEnabled=true
-ormEnhancementInclusions=src/de/bluemel/tendoapp/shared/Seminar.java|src/
+ormEnhancementInclusions=src/de/bluemel/tendoapp/server/SeminarPO.java
 validationExclusions=test/de/bluemel/tendoapp/client/TendoappGwtRpcClientTest.java|test/com/gdevelop/gwt/syncrpc/RemoteServiceSyncProxy.java
